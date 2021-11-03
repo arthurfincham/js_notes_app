@@ -8,4 +8,9 @@ describe('Notes', () => {
     notes.add(mockNote);
     expect(notes.all()).toContain(mockNote);
   });
+
+  test('returns an array', () => {
+    notes.add(mockNote);
+    expect(notes.all()).toBeInstanceOf(Array);
+  });
 });
