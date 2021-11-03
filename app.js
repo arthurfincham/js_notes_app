@@ -1,22 +1,25 @@
-const express = require('express')
-const Note = require('./src/note')
-const Notes = require('./src/notes')
-const app = express()
-const port = 3000
+const express = require('express'),
+      Notes = require('./src/notes'),
+      app = express(),
+      port = 3000,
+      notes = new Notes();
+
+app.use(express.json());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.sendfile('index.html')
 })
 
-app.get('/new', (req, res) => {
-  res.sendFile(path.join(__dirname+'/index.html'));
+app.get('/notes', (req, res) => {
+  responseObject = JSON.stringify(notes.all());
+  res.send(responseObject);
 })
 
-app.post('/new-note', (req, res) => {
-  const title = req.params.title
-  const content = req.params.content
-  const newNote = new Note(title, content);
-  res.send('New note created.')
+app.post('/notes', (req, res) => {
+  const newNote = { title: req.body.title, content: req.body.content };
+
+  notes.add(newNote)
+  res.send(newNote);
 })
 
 app.listen(port, () => {
